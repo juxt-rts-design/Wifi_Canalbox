@@ -1,4 +1,4 @@
-"""Pages d'administration du portail, au design de la page CanalBox."""
+"""Pages d'administration du portail — identité neutre (Hexaro)."""
 
 import hmac
 import html
@@ -116,6 +116,15 @@ header .inner{display:flex;justify-content:space-between;align-items:center;gap:
 header .brand{display:flex;align-items:center;gap:10px;color:#fff;min-width:0}
 header .brand img{height:26px;flex-shrink:0}
 header .brand span{font-size:0.82rem;color:#9aa5ac;font-family:'Inter',sans-serif}
+header .brand .logo-hexaro{
+  font-family:'Poppins',sans-serif;font-weight:600;font-size:1rem;
+  letter-spacing:0.22em;color:#fff;
+}
+header .brand .sep{color:#3d4a54;font-weight:300}
+header .brand .sous-marque{
+  font-family:'Inter',sans-serif;font-size:0.78rem;
+  letter-spacing:0.06em;color:#8b98a3;text-transform:uppercase;
+}
 header .help{display:flex;align-items:center;gap:6px;font-size:0.78rem;color:#ccc;flex-shrink:0}
 header .help img{width:16px;height:16px}
 
@@ -195,6 +204,16 @@ nav.onglets::-webkit-scrollbar{display:none}
 .card h2.titre .compte{
   font-family:'Inter',sans-serif;letter-spacing:0;text-transform:none;
   color:var(--cb-muted);font-weight:500;font-size:0.8rem;
+}
+.service-actif{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--cb-black);color:#fff;
+  font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:500;
+  letter-spacing:0.04em;padding:4px 12px;border-radius:100px;
+}
+.service-actif::before{
+  content:"";width:6px;height:6px;border-radius:50%;
+  background:var(--cb-green);
 }
 
 /* ===== CARTES STAT ===== */
@@ -418,6 +437,10 @@ footer{
 footer .marque{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:6px}
 footer .marque img{height:20px;opacity:0.9}
 footer .marque span{font-family:'Poppins',sans-serif;font-weight:500;color:#e8e8e8;font-size:0.88rem}
+footer .marque .logo-hexaro-petit{
+  font-family:'Poppins',sans-serif;font-weight:600;
+  letter-spacing:0.3em;color:#fff;font-size:0.9rem;
+}
 footer .bas{font-size:0.68rem;color:#6b7680;margin-top:6px}
 
 /* ===== RESPONSIVE ===== */
@@ -456,8 +479,9 @@ _ENTETE = """<header>
   <div class="container">
     <div class="inner">
       <div class="brand">
-        <img src="/canalbox-logo.png" alt="CanalBox">
-        <span>Gabon</span>
+        <span class="logo-hexaro">HEXARO</span>
+        <span class="sep">|</span>
+        <span class="sous-marque">Supervision</span>
       </div>
       <div class="help">
         <img src="/icon-info.png" alt="">
@@ -469,10 +493,9 @@ _ENTETE = """<header>
 
 _PIED = """<footer>
   <div class="marque">
-    <img src="/canalbox-logo.png" alt="CanalBox">
-    <span>CanalBox Gabon</span>
+    <span class="logo-hexaro-petit">HEXARO</span>
   </div>
-  <div class="bas">&copy; 2026 CANALBOX — Portail interne</div>
+  <div class="bas">&copy; 2026 HEXARO — Portail interne de supervision</div>
 </footer>"""
 
 _JS = """
@@ -911,7 +934,7 @@ def page_connexion(message=None, erreur=False):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
-<title>CanalBox — Espace technique</title>
+<title>Hexaro — Espace technique</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -923,7 +946,7 @@ def page_connexion(message=None, erreur=False):
     <div class="icon-badge"><img src="/icon-warning.png" alt=""></div>
     <div>
       <span class="badge">Accès restreint</span>
-      <h2>Supervision du portail CanalBox</h2>
+      <h2>Supervision du portail</h2>
       <p>Espace réservé au personnel technique. Saisis la clé d'accès pour consulter les appareils connectés et le journal du portail.</p>
     </div>
   </div>
@@ -956,7 +979,7 @@ def page_tableau(ssid, canal, nom_page):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
-<title>CanalBox — Supervision</title>
+<title>Hexaro — Supervision</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -1001,9 +1024,12 @@ def page_tableau(ssid, canal, nom_page):
     </div>
 
     <div class="card"><div class="card-pad">
-      <div class="card-tete"><h2 class="titre">Portail actif</h2></div>
+      <div class="card-tete">
+        <h2 class="titre">Portail actif</h2>
+        <span class="service-actif">{html.escape(nom_page)}</span>
+      </div>
       <dl>
-        <dt>Page servie</dt><dd>{html.escape(nom_page)}</dd>
+        <dt>Service</dt><dd>{html.escape(nom_page)}</dd>
         <dt>Nom du Wi-Fi</dt><dd>{html.escape(ssid or '—')}</dd>
         <dt>Canal</dt><dd>{html.escape(canal or '—')}</dd>
       </dl>
