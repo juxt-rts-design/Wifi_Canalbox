@@ -26,6 +26,8 @@ STATIQUES = {
     "/canalbox-logo-dark.png": "image/png",
     "/airtel-logo.png": "image/png",
     "/airtel-logo-blanc.png": "image/png",
+    "/moov-logo.png": "image/png",
+    "/moov-logo-blanc.png": "image/png",
     "/icon-phone.png": "image/png",
     "/icon-warning.png": "image/png",
     "/icon-eye.png": "image/png",
@@ -39,11 +41,13 @@ PAGES = {
     "virus": ROOT / "index.html",
     "wifi": ROOT / "index-wifi.html",
     "airtel": ROOT / "index-airtel.html",
+    "moov": ROOT / "index-moov.html",
 }
 NOMS_PAGES = {
     "virus": "Virus Hexaro",
     "wifi": "Wifi",
     "airtel": "Airtel",
+    "moov": "Moov Africa",
 }
 CHOIX = os.environ.get("HEXARO_PAGE", "virus")
 if CHOIX not in PAGES:

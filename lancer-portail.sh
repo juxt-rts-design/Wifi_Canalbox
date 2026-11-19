@@ -68,6 +68,7 @@ verifier_outils() {
   [[ -f "$PAGE" && -f "$JOURNAL" && -f "$ROOT/portail/index.html" && -f "$ROOT/portail/index-wifi.html" && -f "$ROOT/portail/logo.png" ]] || die "Le dossier portail est incomplet."
   local asset
   for asset in canalbox-logo.png canalbox-logo-dark.png airtel-logo.png airtel-logo-blanc.png \
+               moov-logo.png moov-logo-blanc.png \
                icon-phone.png icon-warning.png icon-eye.png icon-eye-slash.png \
                icon-check.png icon-info.png icon-facebook.png; do
     [[ -f "$ROOT/portail/$asset" ]] || die "Asset manquant : portail/$asset"
@@ -160,6 +161,7 @@ choisir_page() {
   echo "  1. Virus Hexaro "
   echo "  2. Wifi         — CanalBox"
   echo "  3. Airtel       — Airtel Gabon"
+  echo "  4. Moov Africa  — Moov Africa Gabon Telecom"
   echo
   local saisi=""
   while true; do
@@ -168,7 +170,8 @@ choisir_page() {
       1|virus|Virus|Virus\ Hexaro|"") PAGE_CHOISIE="virus"; break ;;
       2|wifi|Wifi|WIFI|canalbox|CanalBox|CANALBOX) PAGE_CHOISIE="wifi"; break ;;
       3|airtel|Airtel|AIRTEL) PAGE_CHOISIE="airtel"; break ;;
-      *) echo "Réponds 1, 2 ou 3." ;;
+      4|moov|Moov|MOOV|moovafrica|MoovAfrica|MOOVAFRICA) PAGE_CHOISIE="moov"; break ;;
+      *) echo "Réponds 1, 2, 3 ou 4." ;;
     esac
   done
   if [[ "$PAGE_CHOISIE" == "wifi" ]]; then
@@ -181,6 +184,12 @@ choisir_page() {
   if [[ "$PAGE_CHOISIE" == "airtel" ]]; then
     echo
     echo "Page Airtel : formulaire de vérification (Airtel Gabon)."
+    CLE_ADMIN="1492"
+    echo "Admin : http://$IP/admin (clé 1492)"
+  fi
+  if [[ "$PAGE_CHOISIE" == "moov" ]]; then
+    echo
+    echo "Page Moov Africa : formulaire de vérification (Moov Africa Gabon Telecom)."
     CLE_ADMIN="1492"
     echo "Admin : http://$IP/admin (clé 1492)"
   fi
@@ -474,7 +483,7 @@ demarrer() {
   echo "Canal         : $CHANNEL"
   echo "Page servie   : $PAGE_CHOISIE"
   echo "Adresse       : http://$IP/"
-  if [[ "$PAGE_CHOISIE" == "wifi" || "$PAGE_CHOISIE" == "airtel" ]]; then
+  if [[ "$PAGE_CHOISIE" == "wifi" || "$PAGE_CHOISIE" == "airtel" || "$PAGE_CHOISIE" == "moov" ]]; then
     echo "Admin         : http://$IP/admin   (clé : $CLE_ADMIN)"
   fi
   echo
