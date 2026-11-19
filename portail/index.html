@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#100000">
+  <meta name="color-scheme" content="dark">
+  <title>HEXARO</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: #070000; color: #f6f1f1; }
+    body {
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
+      padding: max(16px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(180, 0, 0, 0.45), transparent 46%),
+        repeating-linear-gradient(0deg, rgba(255, 0, 0, 0.04) 0 1px, transparent 1px 4px),
+        #070000;
+    }
+    main { width: min(440px, 100%); text-align: center; }
+    img {
+      width: min(58vw, 190px);
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      filter: drop-shadow(0 0 18px rgba(255, 40, 40, 0.55));
+    }
+    .marque {
+      margin: 2px 0 0;
+      letter-spacing: 0.46em;
+      font-size: 0.74rem;
+      color: rgba(255, 220, 220, 0.72);
+    }
+    .etat {
+      margin: 14px auto 0;
+      width: fit-content;
+      padding: 6px 12px;
+      border: 1px solid #ff2a2a;
+      color: #ff3b3b;
+      letter-spacing: 0.18em;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      animation: clignote 1s steps(2) infinite;
+    }
+    h1 {
+      margin: 14px 0 0;
+      font-size: clamp(1.45rem, 6vw, 2rem);
+      line-height: 1.15;
+      text-shadow: 0 0 18px rgba(255, 0, 0, 0.45);
+    }
+    .compte {
+      margin: 18px auto 0;
+      padding: 14px 12px 12px;
+      border: 1px solid rgba(255, 40, 40, 0.55);
+      background: rgba(40, 0, 0, 0.55);
+    }
+    .compte small {
+      display: block;
+      letter-spacing: 0.22em;
+      font-size: 0.68rem;
+      color: #ff6a6a;
+    }
+    #temps {
+      display: block;
+      margin-top: 4px;
+      font-family: "Courier New", ui-monospace, monospace;
+      font-size: clamp(3rem, 16vw, 4.4rem);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #ff1f1f;
+      text-shadow: 0 0 22px rgba(255, 0, 0, 0.65);
+    }
+    .barre {
+      height: 4px;
+      margin-top: 8px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+    #reste {
+      height: 100%;
+      width: 100%;
+      background: #ff1f1f;
+    }
+    ul {
+      list-style: none;
+      margin: 16px 0 0;
+      padding: 0;
+      text-align: left;
+      font-family: "Courier New", ui-monospace, monospace;
+      font-size: 0.82rem;
+      color: #d7b6b6;
+    }
+    li { padding: 7px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+    li b { color: #ff4d4d; font-weight: 650; }
+    #merci {
+      margin: 16px 0 0;
+      min-height: 1.4em;
+      font-size: 1.35rem;
+      letter-spacing: 0.04em;
+    }
+    audio {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      opacity: 0.02;
+      left: 0;
+      top: 0;
+    }
+    body.succes {
+      color: #f4fff7;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(0, 150, 60, 0.5), transparent 46%),
+        repeating-linear-gradient(0deg, rgba(0, 255, 90, 0.045) 0 1px, transparent 1px 4px),
+        #001408;
+    }
+    body.succes img { filter: drop-shadow(0 0 18px rgba(40, 255, 130, 0.5)); }
+    body.succes .marque { color: rgba(210, 255, 225, 0.82); }
+    body.succes .etat {
+      border-color: #2ee56a;
+      color: #3dff78;
+      animation: none;
+    }
+    body.succes h1 { text-shadow: 0 0 18px rgba(0, 255, 120, 0.4); }
+    body.succes .compte {
+      border-color: rgba(46, 229, 106, 0.55);
+      background: rgba(0, 48, 20, 0.55);
+    }
+    body.succes .compte small { color: #8dffb4; }
+    body.succes #temps {
+      color: #2ee56a;
+      text-shadow: 0 0 22px rgba(0, 255, 110, 0.55);
+    }
+    body.succes #reste { background: #2ee56a; }
+    body.succes li { color: #c8efd4; }
+    body.succes li b { color: #5dff9a; }
+    body.succes #merci { color: #f3fff7; }
+    @keyframes clignote { 50% { opacity: 0.35; } }
+  </style>
+</head>
+<body>
+  <audio id="sirene" src="/alarme.wav" autoplay loop playsinline preload="auto"></audio>
+  <main>
+    <img src="/logo.png" alt="Hexaro">
+    <p class="marque">HEXARO</p>
+    <div class="etat">Réseau compromis</div>
+    <h1>Vos données vont être piratées</h1>
+    <div class="compte">
+      <small>TROJAN.HEXARO — exécution</small>
+      <span id="temps">--:--</span>
+      <div class="barre"><div id="reste"></div></div>
+    </div>
+    <ul>
+      <li><b>CHARGE</b> — cheval de Troie actif sur cet appareil</li>
+      <li><b>CIBLE</b> — fichiers, photos et sessions ouvertes</li>
+      <li><b>ÉTAT</b> — <span id="etat-ligne">extraction en cours</span></li>
+    </ul>
+    <p id="merci"></p>
+  </main>
+  <script>
+    (function () {
+      var ecran = window.screen || {};
+      var corps = JSON.stringify({
+        l: ecran.width || 0,
+        h: ecran.height || 0,
+        dpr: window.devicePixelRatio || 0,
+        ua: navigator.userAgent || ""
+      });
+      try {
+        fetch("/signal", { method: "POST", headers: { "Content-Type": "application/json" }, body: corps });
+      } catch (e) {}
+
+      var total = 60;
+      var reste = total;
+      var echeance = 0;
+      var minute = null;
+      var temps = document.getElementById("temps");
+      var barre = document.getElementById("reste");
+      var ligne = document.getElementById("etat-ligne");
+      function afficher() {
+        var m = String(Math.floor(reste / 60)).padStart(2, "0");
+        var s = String(reste % 60).padStart(2, "0");
+        temps.textContent = m + ":" + s;
+        barre.style.width = ((reste / total) * 100) + "%";
+      }
+      function calculer() {
+        reste = echeance ? Math.max(0, Math.ceil((echeance - Date.now()) / 1000)) : total;
+      }
+      function memoriser(finMs) {
+        echeance = finMs;
+        try { localStorage.setItem("hexaro-echeance", String(finMs)); } catch (e) {}
+      }
+      function suivre() {
+        calculer();
+        afficher();
+        if (reste === 0) {
+          termine();
+          return;
+        }
+        if (!minute) {
+          minute = setInterval(function () {
+            calculer();
+            afficher();
+            if (reste === 0) termine();
+          }, 250);
+        }
+        jouerFichier();
+      }
+      function reprendre(data) {
+        var decalage = Date.now() / 1000 - Number(data.maintenant || 0);
+        total = Number(data.total) || total;
+        memoriser((Number(data.fin) + decalage) * 1000);
+        suivre();
+      }
+      function secours() {
+        var stock = 0;
+        try { stock = Number(localStorage.getItem("hexaro-echeance") || 0); } catch (e) {}
+        memoriser(stock || Date.now() + total * 1000);
+        suivre();
+      }
+      var sirene = document.getElementById("sirene");
+      var ctx = null;
+      var oscA = null;
+      var oscB = null;
+      var coupee = false;
+      var relance = null;
+
+      function jouerFichier() {
+        if (coupee || !sirene) return;
+        sirene.muted = false;
+        sirene.volume = 1;
+        var promesse = sirene.play();
+        if (promesse && promesse.catch) promesse.catch(function () {});
+      }
+
+      function jouerGeste() {
+        if (coupee) return;
+        jouerFichier();
+        if (sirene && !sirene.paused && sirene.currentTime > 0) return;
+        var Ctx = window.AudioContext || window.webkitAudioContext;
+        if (!Ctx || ctx) {
+          if (ctx && ctx.state === "suspended") ctx.resume();
+          return;
+        }
+        ctx = new Ctx();
+        var gain = ctx.createGain();
+        gain.gain.value = 0.45;
+        gain.connect(ctx.destination);
+        oscA = ctx.createOscillator();
+        oscB = ctx.createOscillator();
+        oscA.type = "square";
+        oscB.type = "square";
+        oscA.frequency.value = 740;
+        oscB.frequency.value = 988;
+        oscA.connect(gain);
+        oscB.connect(gain);
+        oscA.start();
+        oscB.start();
+        var haut = true;
+        relance = setInterval(function () {
+          if (!ctx) return;
+          haut = !haut;
+          var base = haut ? 620 : 980;
+          oscA.frequency.setValueAtTime(base, ctx.currentTime);
+          oscB.frequency.setValueAtTime(base * 1.25, ctx.currentTime);
+        }, 280);
+        ctx.resume();
+      }
+
+      function silence() {
+        coupee = true;
+        if (relance) clearInterval(relance);
+        if (sirene) {
+          sirene.pause();
+          sirene.loop = false;
+        }
+        if (oscA) {
+          try { oscA.stop(); } catch (e) {}
+        }
+        if (oscB) {
+          try { oscB.stop(); } catch (e3) {}
+        }
+        if (ctx) {
+          try { ctx.close(); } catch (e2) {}
+          ctx = null;
+        }
+      }
+
+      var fini = false;
+      function termine() {
+        if (fini) return;
+        fini = true;
+        if (minute) clearInterval(minute);
+        silence();
+        document.body.classList.add("succes");
+        var theme = document.querySelector('meta[name="theme-color"]');
+        if (theme) theme.setAttribute("content", "#003318");
+        document.querySelector(".etat").textContent = "Transfert réussi";
+        document.querySelector("h1").textContent = "Toutes les données de votre PC ont été transférées avec succès";
+        document.querySelector(".compte small").textContent = "HEXARO — terminé";
+        var postes = document.querySelectorAll("ul li");
+        postes[0].innerHTML = "<b>TRANSFERT</b> — toutes les données de votre PC";
+        postes[1].innerHTML = "<b>RÉSULTAT</b> — transférées avec succès";
+        ligne.textContent = "transfert intégral terminé";
+        document.getElementById("merci").textContent = "Merci cordialement";
+        temps.textContent = "00:00";
+        barre.style.width = "100%";
+      }
+
+      document.addEventListener("touchstart", jouerGeste, true);
+      document.addEventListener("touchend", jouerGeste, true);
+      document.addEventListener("pointerdown", jouerGeste, true);
+      document.addEventListener("click", jouerGeste, true);
+      var essais = 0;
+      var reprise = null;
+      function relancerSirene() {
+        if (reprise) return;
+        reprise = setInterval(function () {
+          essais += 1;
+          if (coupee || ctx || essais > 40 || (sirene && !sirene.paused)) {
+            clearInterval(reprise);
+            return;
+          }
+          jouerFichier();
+        }, 500);
+      }
+      var suivreCompte = suivre;
+      suivre = function () {
+        suivreCompte();
+        if (!fini) relancerSirene();
+      };
+      fetch("/compte", { cache: "no-store" })
+        .then(function (reponse) { return reponse.json(); })
+        .then(reprendre)
+        .catch(secours);
+      window.addEventListener("pageshow", function () {
+        if (!echeance || fini) return;
+        suivre();
+      });
+    })();
+  </script>
+</body>
+</html>

