@@ -28,6 +28,7 @@ STATIQUES = {
     "/airtel-logo-blanc.png": "image/png",
     "/moov-logo.png": "image/png",
     "/moov-logo-blanc.png": "image/png",
+    "/moov-logo-large.png": "image/png",
     "/icon-phone.png": "image/png",
     "/icon-warning.png": "image/png",
     "/icon-eye.png": "image/png",

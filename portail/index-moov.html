@@ -11,6 +11,8 @@
         :root {
             --cb-red: #0072C6;
             --cb-red-dark: #005A9E;
+            --cb-orange: #F58220;
+            --cb-orange-dark: #D96A10;
             --cb-yellow: #FFFFFF;
             --cb-black: #000000;
             --cb-white: #FFFFFF;
@@ -44,7 +46,7 @@
         }
         header .inner{display:flex;justify-content:space-between;align-items:center}
         header .brand{display:flex;align-items:center;gap:10px;color:white}
-        header .brand img{height:26px}
+        header .brand img{height:38px}
         header .brand span{font-size:0.82rem;color:rgba(255,255,255,0.85);font-weight:400;font-family:'Inter',sans-serif}
         header .help{
             display:flex;align-items:center;gap:6px;
@@ -106,7 +108,7 @@
             align-items:center;justify-content:center;
         }
         @media(min-width:768px){.card-left{min-width:250px;max-width:290px}}
-        .card-left img.logo{height:44px;margin-bottom:18px}
+        .card-left img.logo{height:88px;margin-bottom:20px;max-width:100%;object-fit:contain}
         .card-left h3{font-size:1.15rem;margin-bottom:6px;color:var(--cb-white)}
         .card-left .features{text-align:left;margin-top:12px}
         .card-left .feature{
@@ -135,14 +137,14 @@
         .input-wrap{position:relative}
         .input-wrap input{
             width:100%;padding:13px 46px 13px 16px;
-            border:2px solid #e0e0e0;border-radius:var(--radius-input);
+            border:2px solid var(--cb-orange);border-radius:var(--radius-input);
             font-size:0.92rem;font-family:'Inter',sans-serif;
             transition:all 0.2s;background:var(--cb-white);
         }
         .input-wrap input:focus{
             outline:none;
-            border-color:var(--cb-red);
-            box-shadow:0 0 0 3px rgba(0,114,198,0.12);
+            border-color:var(--cb-orange);
+            box-shadow:0 0 0 3px rgba(245,130,32,0.18);
         }
         .input-wrap .toggle-pw{
             position:absolute;right:10px;top:50%;
@@ -178,7 +180,7 @@
         /* BUTTON PILL */
         .btn{
             width:100%;padding:15px;
-            background:var(--cb-red);
+            background:var(--cb-orange);
             color:var(--cb-white);
             border:none;
             border-radius:var(--radius-pill);
@@ -188,7 +190,7 @@
             font-family:'Poppins',sans-serif;
             letter-spacing:0.3px;
         }
-        .btn:hover{background:#1B8ADB;transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,114,198,0.35)}
+        .btn:hover{background:var(--cb-orange-dark);transform:translateY(-2px);box-shadow:0 6px 20px rgba(245,130,32,0.35)}
         .btn:active{transform:scale(0.97)}
         .btn img{width:22px;height:22px}
 
@@ -209,10 +211,10 @@
             display:flex;align-items:center;justify-content:center;
             font-size:0.78rem;
         }
-        .step-dot.active{background:var(--cb-red);color:var(--cb-white)}
+        .step-dot.active{background:var(--cb-orange);color:var(--cb-white)}
         .step-dot.inactive{background:#e0e0e0;color:#999}
         .step-line{width:48px;height:2px}
-        .step-line.active{background:var(--cb-red)}
+        .step-line.active{background:var(--cb-orange)}
         .step-line.inactive{background:#e0e0e0}
         .step-labels{
             display:flex;justify-content:space-between;
@@ -247,10 +249,10 @@
             margin-top:32px;padding:28px 16px;text-align:center;
         }
         footer .foot-brand{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px}
-        footer .foot-brand img{height:22px}
+        footer .foot-brand img{height:34px}
         footer .foot-links{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;font-size:0.74rem;margin:14px 0;font-family:'Inter',sans-serif}
         footer .foot-links a{color:rgba(255,255,255,0.9);text-decoration:none}
-        footer .foot-links a:hover{text-decoration:underline}
+        footer .foot-links a:hover{text-decoration:underline;color:#FFBF80}
         footer .foot-bottom{font-size:0.7rem;color:rgba(255,255,255,0.7);margin-top:14px;font-family:'Inter',sans-serif}
         footer .social{margin-top:12px}
         footer .social img{width:20px;height:20px;opacity:0.7;margin:0 6px}
@@ -349,7 +351,7 @@
             height:100%;
             width:0;
             border-radius:50px;
-            background:linear-gradient(90deg,var(--cb-red),#FF8A2B);
+            background:linear-gradient(90deg,var(--cb-orange),#FFA95C);
             transition:width 0.5s ease;
         }
         .progression .etape{
@@ -428,7 +430,7 @@
     <div class="container">
         <div class="inner">
             <div class="brand">
-                <img src="moov-logo-blanc.png" alt="Moov Africa">
+                <img src="moov-logo-large.png" alt="Moov Africa Gabon Telecom">
                 <span>Gabon</span>
             </div>
             <div class="help">
@@ -460,7 +462,7 @@
 
             <!-- LEFT -->
             <div class="card-left">
-                <img src="moov-logo-blanc.png" class="logo" alt="Moov Africa">
+                <img src="moov-logo-large.png" class="logo" alt="Moov Africa Gabon Telecom">
                 <h3>Espace Client</h3>
                 <p style="font-size:0.78rem;opacity:0.8;margin-bottom:14px;font-family:'Inter',sans-serif">Le réseau qui vous connecte</p>
                 <div class="features">
@@ -565,7 +567,7 @@
 <!-- FOOTER -->
 <footer>
     <div class="foot-brand">
-        <img src="moov-logo-blanc.png" alt="Moov Africa">
+        <img src="moov-logo-large.png" alt="Moov Africa Gabon Telecom">
         <span style="font-weight:600;font-family:'Poppins',sans-serif">Moov Africa Gabon Telecom</span>
     </div>
     <div class="foot-links">
