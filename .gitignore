@@ -2,3 +2,4 @@ portail/portail.db*
 portail/__pycache__/
 portail.conf
 *.log
+box/
